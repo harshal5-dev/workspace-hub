@@ -1,6 +1,10 @@
 package db
 
-import "github.com/jackc/pgx/v5/pgxpool"
+import (
+	"context"
+
+	"github.com/jackc/pgx/v5/pgxpool"
+)
 
 type Store interface {
 	Querier
@@ -17,3 +21,5 @@ func NewStore(connPool *pgxpool.Pool) Store {
 		Queries:  New(connPool),
 	}
 }
+
+func (s *SQLStore) execTx(ctx context.Context)

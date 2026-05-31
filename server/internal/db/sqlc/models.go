@@ -231,6 +231,7 @@ type Permission struct {
 	ID          pgtype.UUID      `json:"id"`
 	Name        string           `json:"name"`
 	Description pgtype.Text      `json:"description"`
+	Code        string           `json:"code"`
 	RoleId      pgtype.UUID      `json:"roleId"`
 	CreatedAt   pgtype.Timestamp `json:"created_at"`
 	UpdatedAt   pgtype.Timestamp `json:"updated_at"`
@@ -295,9 +296,9 @@ type User struct {
 	FirstName         string           `json:"first_name"`
 	LastName          pgtype.Text      `json:"last_name"`
 	UserName          string           `json:"user_name"`
-	EmailId           string           `json:"emailId"`
+	EmailID           string           `json:"email_id"`
 	HashPassword      string           `json:"hash_password"`
-	ProfilePictureUrl pgtype.Text      `json:"profilePictureUrl"`
+	ProfilePictureUrl pgtype.Text      `json:"profile_picture_url"`
 	Status            UserStatus       `json:"status"`
 	CreatedAt         pgtype.Timestamp `json:"created_at"`
 	UpdatedAt         pgtype.Timestamp `json:"updated_at"`

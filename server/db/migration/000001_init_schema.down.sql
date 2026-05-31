@@ -1,5 +1,6 @@
 DROP TABLE IF EXISTS "sessions";
 DROP TABLE IF EXISTS "reset_password";
+DROP TABLE IF EXISTS "role_permissions";
 DROP TABLE IF EXISTS "permissions";
 DROP TABLE IF EXISTS "tenant_users";
 DROP TABLE IF EXISTS "roles";

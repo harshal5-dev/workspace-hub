@@ -46,9 +46,9 @@ CREATE TABLE "users" (
   "first_name" varchar(150) NOT NULL,
   "last_name" varchar(150),
   "user_name" varchar(500) UNIQUE NOT NULL,
-  "emailId" varchar(500) NOT NULL,
+  "email_id" varchar(500) NOT NULL,
   "hash_password" varchar(500) NOT NULL,
-  "profilePictureUrl" varchar(2000),
+  "profile_picture_url" varchar(2000),
   "status" "user_status" NOT NULL DEFAULT ('INVITED'),
   "created_at" timestamp NOT NULL DEFAULT (now()),
   "updated_at" timestamp NOT NULL DEFAULT (now())
@@ -67,7 +67,7 @@ CREATE TABLE "tenant_users" (
 CREATE TABLE "roles" (
   "id" uuid PRIMARY KEY DEFAULT gen_random_uuid(),
   "name" varchar(100) NOT NULL,
-  "tenantId" uuid,
+  "code" varchar(100) NOT NULL UNIQUE,
   "description" varchar(500),
   "scope" "role_scope" DEFAULT ('TENANT'),
   "status" "role_status" NOT NULL DEFAULT ('ACTIVE'),
@@ -79,10 +79,17 @@ CREATE TABLE "permissions" (
   "id" uuid PRIMARY KEY DEFAULT gen_random_uuid(),
   "name" varchar(100) NOT NULL,
   "description" varchar(500),
-  "roleId" uuid,
+  "code" varchar(100) NOT NULL UNIQUE,
   "created_at" timestamp NOT NULL DEFAULT (now()),
   "updated_at" timestamp NOT NULL DEFAULT (now())
 );
+
+CREATE TABLE "role_permissions" (
+  "id" uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  "role_id" uuid NOT NULL,
+  "permission_id" uuid NOT NULL
+);
+
 
 CREATE TABLE "reset_password" (
   "id" uuid PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -109,19 +116,17 @@ CREATE TABLE "sessions" (
 
 CREATE UNIQUE INDEX ON "tenant_users" ("user_id", "tenant_id");
 
-CREATE UNIQUE INDEX ON "roles" ("id", "tenantId");
-
-CREATE UNIQUE INDEX ON "roles" ("name", "tenantId");
+CREATE UNIQUE INDEX ON "role_permissions" ("role_id", "permission_id");
 
 ALTER TABLE "tenant_users" ADD FOREIGN KEY ("user_id") REFERENCES "users" ("id") DEFERRABLE INITIALLY IMMEDIATE;
 
 ALTER TABLE "tenant_users" ADD FOREIGN KEY ("tenant_id") REFERENCES "tenants" ("id") DEFERRABLE INITIALLY IMMEDIATE;
 
-ALTER TABLE "tenant_users" ADD FOREIGN KEY ("tenant_id", "role_id") REFERENCES "roles" ("tenantId", "id") DEFERRABLE INITIALLY IMMEDIATE;
+ALTER TABLE "tenant_users" ADD FOREIGN KEY ("role_id") REFERENCES "roles" ("id") DEFERRABLE INITIALLY IMMEDIATE;
 
-ALTER TABLE "roles" ADD FOREIGN KEY ("tenantId") REFERENCES "tenants" ("id") DEFERRABLE INITIALLY IMMEDIATE;
+ALTER TABLE "role_permissions" ADD FOREIGN KEY ("role_id") REFERENCES "roles" ("id") DEFERRABLE INITIALLY IMMEDIATE;
 
-ALTER TABLE "permissions" ADD FOREIGN KEY ("roleId") REFERENCES "roles" ("id") DEFERRABLE INITIALLY IMMEDIATE;
+ALTER TABLE "role_permissions" ADD FOREIGN KEY ("permission_id") REFERENCES "permissions" ("id") DEFERRABLE INITIALLY IMMEDIATE;
 
 ALTER TABLE "reset_password" ADD FOREIGN KEY ("user_id") REFERENCES "users" ("id") DEFERRABLE INITIALLY IMMEDIATE;
 

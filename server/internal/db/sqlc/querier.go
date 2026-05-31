@@ -12,6 +12,7 @@ import (
 
 type Querier interface {
 	CreateTenant(ctx context.Context, arg CreateTenantParams) (Tenant, error)
+	CreateUser(ctx context.Context, arg CreateUserParams) (User, error)
 	GetTenant(ctx context.Context, id pgtype.UUID) (Tenant, error)
 }
 
