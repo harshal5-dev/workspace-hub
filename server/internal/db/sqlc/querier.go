@@ -6,10 +6,13 @@ package db
 
 import (
 	"context"
+
+	"github.com/jackc/pgx/v5/pgtype"
 )
 
 type Querier interface {
 	CreateTenant(ctx context.Context, arg CreateTenantParams) (Tenant, error)
+	GetTenant(ctx context.Context, id pgtype.UUID) (Tenant, error)
 }
 
 var _ Querier = (*Queries)(nil)

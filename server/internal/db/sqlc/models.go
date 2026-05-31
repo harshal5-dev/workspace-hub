@@ -294,7 +294,7 @@ type User struct {
 	ID                pgtype.UUID      `json:"id"`
 	FirstName         string           `json:"first_name"`
 	LastName          pgtype.Text      `json:"last_name"`
-	UserId            string           `json:"userId"`
+	UserName          string           `json:"user_name"`
 	EmailId           string           `json:"emailId"`
 	HashPassword      string           `json:"hash_password"`
 	ProfilePictureUrl pgtype.Text      `json:"profilePictureUrl"`

@@ -45,7 +45,7 @@ CREATE TABLE "users" (
   "id" uuid PRIMARY KEY DEFAULT gen_random_uuid(),
   "first_name" varchar(150) NOT NULL,
   "last_name" varchar(150),
-  "userId" varchar(500) UNIQUE NOT NULL,
+  "user_name" varchar(500) UNIQUE NOT NULL,
   "emailId" varchar(500) NOT NULL,
   "hash_password" varchar(500) NOT NULL,
   "profilePictureUrl" varchar(2000),

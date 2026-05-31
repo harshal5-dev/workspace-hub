@@ -23,8 +23,7 @@ func main() {
 
 	server := api.NewServer(cfg, store)
 
-	err = server.Start()
-	if err != nil {
+	if err := server.Start(); err != nil {
 		log.Fatal("server not started:", err)
 	}
 }

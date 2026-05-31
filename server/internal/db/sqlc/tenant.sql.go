@@ -34,3 +34,22 @@ func (q *Queries) CreateTenant(ctx context.Context, arg CreateTenantParams) (Ten
 	)
 	return i, err
 }
+
+const getTenant = `-- name: GetTenant :one
+SELECT id, name, description, "isActive", created_at, updated_at, status FROM tenants WHERE id = $1 LIMIT 1
+`
+
+func (q *Queries) GetTenant(ctx context.Context, id pgtype.UUID) (Tenant, error) {
+	row := q.db.QueryRow(ctx, getTenant, id)
+	var i Tenant
+	err := row.Scan(
+		&i.ID,
+		&i.Name,
+		&i.Description,
+		&i.IsActive,
+		&i.CreatedAt,
+		&i.UpdatedAt,
+		&i.Status,
+	)
+	return i, err
+}
