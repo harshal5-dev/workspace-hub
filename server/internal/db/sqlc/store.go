@@ -10,6 +10,7 @@ import (
 type Store interface {
 	Querier
 	RegisterUserTx(ctx context.Context, arg RegisterUserTxParams) (RegisterUserTxResult, error)
+	Close()
 }
 
 type SQLStore struct {
@@ -22,6 +23,10 @@ func NewStore(connPool *pgxpool.Pool) Store {
 		connPool: connPool,
 		Queries:  New(connPool),
 	}
+}
+
+func (store *SQLStore) Close() {
+	store.connPool.Close()
 }
 
 func (store *SQLStore) execTx(ctx context.Context, fn func(*Queries) error) error {

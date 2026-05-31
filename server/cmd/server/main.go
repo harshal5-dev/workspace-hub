@@ -21,6 +21,7 @@ func main() {
 	if err != nil {
 		log.Fatal("cannot connect to database:", err)
 	}
+	defer store.Close()
 
 	container := app.NewContainer(cfg, store)
 	server := httptransport.NewServer(container)

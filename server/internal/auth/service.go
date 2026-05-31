@@ -4,7 +4,6 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"log"
 	"net/http"
 
 	"github.com/harshal5-dev/workspace-hub/server/internal/common"
@@ -27,7 +26,6 @@ func (service *Service) RegisterUser(ctx context.Context, payload RegisterReques
 	isExists, err := service.store.CheckUserExistsByEmailId(ctx, payload.EmailId)
 
 	if err != nil {
-		log.Println(err)
 		return RegisterResponse{}, common.NewAppError(errors.New(errMessage), http.StatusInternalServerError)
 	}
 
@@ -41,9 +39,14 @@ func (service *Service) RegisterUser(ctx context.Context, payload RegisterReques
 		return RegisterResponse{}, common.NewAppError(errors.New(errMessage), http.StatusInternalServerError)
 	}
 
+	lastName := ""
+	if payload.LastName != nil {
+		lastName = *payload.LastName
+	}
+
 	result, err := service.store.RegisterUserTx(ctx, db.RegisterUserTxParams{
 		FirstName:      payload.FirstName,
-		LastName:       *payload.LastName,
+		LastName:       lastName,
 		EmailId:        payload.EmailId,
 		HashedPassword: hashPassword,
 	})

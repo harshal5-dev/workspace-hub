@@ -14,9 +14,9 @@ func Init(dbSource string) (store db.Store, err error) {
 	if err != nil {
 		return nil, fmt.Errorf("Failed connect to database: %w", err)
 	}
-	defer connPool.Close()
 
 	if err := connPool.Ping(ctx); err != nil {
+		connPool.Close()
 		return nil, fmt.Errorf("Failed ping database: %w", err)
 	}
 

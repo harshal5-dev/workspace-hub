@@ -17,16 +17,28 @@ func NewHandler(service *Service) *Handler {
 func (handler *Handler) RegisterUser(c *gin.Context) {
 	var payload RegisterRequest
 	if err := c.ShouldBindJSON(&payload); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error":   "invalid request body",
+			"details": buildValidationErrorDetails(err),
+		})
+		return
+	}
 
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+	payload.Normalize()
+
+	if err := validateRegisterRequest(payload); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error":   "invalid request body",
+			"details": buildValidationErrorDetails(err),
+		})
 		return
 	}
 
 	registerUserResponse, appErr := handler.service.RegisterUser(c.Request.Context(), payload)
 	if appErr != nil {
-
 		c.JSON(appErr.HttpStatusCode, gin.H{"error": appErr.Err.Error()})
 		return
 	}
+
 	c.JSON(http.StatusCreated, registerUserResponse)
 }
