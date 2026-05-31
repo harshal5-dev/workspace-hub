@@ -1,0 +1,24 @@
+package db
+
+import (
+	"context"
+	"fmt"
+
+	db "github.com/harshal5-dev/workspace-hub/server/internal/db/sqlc"
+	"github.com/jackc/pgx/v5/pgxpool"
+)
+
+func Init(dbSource string) (store db.Store, err error) {
+	ctx := context.Background()
+	connPool, err := pgxpool.New(ctx, dbSource)
+	if err != nil {
+		return nil, fmt.Errorf("Failed connect to database: %w", err)
+	}
+	defer connPool.Close()
+
+	if err := connPool.Ping(ctx); err != nil {
+		return nil, fmt.Errorf("Failed ping database: %w", err)
+	}
+
+	return db.NewStore(connPool), nil
+}

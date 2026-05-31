@@ -7,19 +7,23 @@ create-db:
 drop-db:
 	docker exec -it postgres18 dropdb workspace_hub_db
 
+migrate-create:
+	migrate create -ext sql -dir db/migration -seq $(name)
+	# make migrate-create name=init_schema
+
 migrate-up:
-	migrate -path migrations -database "postgres://root:12345@localhost:5432/workspace_hub_db?sslmode=disable" -verbose up
+	migrate -path db/migration -database "postgres://root:12345@localhost:5432/workspace_hub_db?sslmode=disable" -verbose up
 
 migrate-down:
-	migrate -path migrations -database "postgres://root:12345@localhost:5432/workspace_hub_db?sslmode=disable" -verbose down
+	migrate -path db/migration -database "postgres://root:12345@localhost:5432/workspace_hub_db?sslmode=disable" -verbose down
 
 sqlc:
 	sqlc generate
 
 server-dev:
-	go run ./cmd/api/main.go
+	go run main.go
 
 server-prod:
-	APP_ENV=production go run ./cmd/api/main.go
+	APP_ENV=production go run main.go
 
-.PHONY: postgres create-db drop-db migrate-up migrate-down sqlc server-dev server-prod
+.PHONY: postgres create-db drop-db migrate-create migrate-up migrate-down sqlc server-dev server-prod
