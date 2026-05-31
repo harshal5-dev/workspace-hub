@@ -4,9 +4,10 @@ import (
 	"log"
 	"os"
 
-	"github.com/harshal5-dev/workspace-hub/server/cmd/api"
+	"github.com/harshal5-dev/workspace-hub/server/internal/app"
 	"github.com/harshal5-dev/workspace-hub/server/internal/config"
 	"github.com/harshal5-dev/workspace-hub/server/internal/db"
+	httptransport "github.com/harshal5-dev/workspace-hub/server/internal/transport/http"
 )
 
 func main() {
@@ -21,7 +22,8 @@ func main() {
 		log.Fatal("cannot connect to database:", err)
 	}
 
-	server := api.NewServer(cfg, store)
+	container := app.NewContainer(cfg, store)
+	server := httptransport.NewServer(container)
 
 	if err := server.Start(); err != nil {
 		log.Fatal("server not started:", err)

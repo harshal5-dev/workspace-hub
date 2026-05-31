@@ -232,7 +232,6 @@ type Permission struct {
 	Name        string           `json:"name"`
 	Description pgtype.Text      `json:"description"`
 	Code        string           `json:"code"`
-	RoleId      pgtype.UUID      `json:"roleId"`
 	CreatedAt   pgtype.Timestamp `json:"created_at"`
 	UpdatedAt   pgtype.Timestamp `json:"updated_at"`
 }
@@ -250,12 +249,18 @@ type ResetPassword struct {
 type Role struct {
 	ID          pgtype.UUID      `json:"id"`
 	Name        string           `json:"name"`
-	TenantId    pgtype.UUID      `json:"tenantId"`
+	Code        string           `json:"code"`
 	Description pgtype.Text      `json:"description"`
 	Scope       NullRoleScope    `json:"scope"`
 	Status      RoleStatus       `json:"status"`
 	CreatedAt   pgtype.Timestamp `json:"created_at"`
 	UpdatedAt   pgtype.Timestamp `json:"updated_at"`
+}
+
+type RolePermission struct {
+	ID           pgtype.UUID `json:"id"`
+	RoleID       pgtype.UUID `json:"role_id"`
+	PermissionID pgtype.UUID `json:"permission_id"`
 }
 
 type Session struct {
@@ -295,7 +300,6 @@ type User struct {
 	ID                pgtype.UUID      `json:"id"`
 	FirstName         string           `json:"first_name"`
 	LastName          pgtype.Text      `json:"last_name"`
-	UserName          string           `json:"user_name"`
 	EmailID           string           `json:"email_id"`
 	HashPassword      string           `json:"hash_password"`
 	ProfilePictureUrl pgtype.Text      `json:"profile_picture_url"`

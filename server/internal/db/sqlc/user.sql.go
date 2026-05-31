@@ -11,14 +11,28 @@ import (
 	"github.com/jackc/pgx/v5/pgtype"
 )
 
+const checkUserExistsByEmailId = `-- name: CheckUserExistsByEmailId :one
+SELECT EXISTS (
+  SELECT 1
+  FROM users
+  WHERE email_id = $1
+)
+`
+
+func (q *Queries) CheckUserExistsByEmailId(ctx context.Context, emailID string) (bool, error) {
+	row := q.db.QueryRow(ctx, checkUserExistsByEmailId, emailID)
+	var exists bool
+	err := row.Scan(&exists)
+	return exists, err
+}
+
 const createUser = `-- name: CreateUser :one
-INSERT INTO users (first_name, last_name, user_name, email_id, hash_password, profile_picture_url) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id, first_name, last_name, user_name, email_id, hash_password, profile_picture_url, status, created_at, updated_at
+INSERT INTO users (first_name, last_name, email_id, hash_password, profile_picture_url) VALUES ($1, $2, $3, $4, $5) RETURNING id, first_name, last_name, email_id, hash_password, profile_picture_url, status, created_at, updated_at
 `
 
 type CreateUserParams struct {
 	FirstName         string      `json:"first_name"`
 	LastName          pgtype.Text `json:"last_name"`
-	UserName          string      `json:"user_name"`
 	EmailID           string      `json:"email_id"`
 	HashPassword      string      `json:"hash_password"`
 	ProfilePictureUrl pgtype.Text `json:"profile_picture_url"`
@@ -28,7 +42,6 @@ func (q *Queries) CreateUser(ctx context.Context, arg CreateUserParams) (User, e
 	row := q.db.QueryRow(ctx, createUser,
 		arg.FirstName,
 		arg.LastName,
-		arg.UserName,
 		arg.EmailID,
 		arg.HashPassword,
 		arg.ProfilePictureUrl,
@@ -38,7 +51,6 @@ func (q *Queries) CreateUser(ctx context.Context, arg CreateUserParams) (User, e
 		&i.ID,
 		&i.FirstName,
 		&i.LastName,
-		&i.UserName,
 		&i.EmailID,
 		&i.HashPassword,
 		&i.ProfilePictureUrl,

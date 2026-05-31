@@ -21,9 +21,9 @@ sqlc:
 	sqlc generate
 
 server-dev:
-	go run main.go
+	go run ./cmd/server/main.go
 
 server-prod:
-	APP_ENV=production go run main.go
+	APP_ENV=production go run ./cmd/server/main.go
 
 .PHONY: postgres create-db drop-db migrate-create migrate-up migrate-down sqlc server-dev server-prod

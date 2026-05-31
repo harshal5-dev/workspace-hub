@@ -2,10 +2,10 @@
 INSERT INTO "roles" ("name", "code", "description", "scope", "status")
 VALUES
   ('Owner', 'OWNER', 'Owns the tenant workspace and can manage everything', 'SYSTEM', 'ACTIVE'),
-  ('Admin', 'ADMIN', 'Manages users, roles, projects, and settings inside a tenant', 'SYSTEM', 'ACTIVE'),
-  ('Project Manager', 'PROJECT_MANAGER', 'Manages projects, members, and tasks', 'SYSTEM', 'ACTIVE'),
-  ('Member', 'MEMBER', 'Works on assigned tasks and comments', 'SYSTEM', 'ACTIVE'),
-  ('Viewer', 'VIEWER', 'Can view projects and tasks but cannot modify them', 'SYSTEM', 'ACTIVE')
+  ('Admin', 'ADMIN', 'Manages users, roles, projects, and settings inside a tenant', 'TENANT', 'ACTIVE'),
+  ('Project Manager', 'PROJECT_MANAGER', 'Manages projects, members, and tasks', 'TENANT', 'ACTIVE'),
+  ('Member', 'MEMBER', 'Works on assigned tasks and comments', 'TENANT', 'ACTIVE'),
+  ('Viewer', 'VIEWER', 'Can view projects and tasks but cannot modify them', 'TENANT', 'ACTIVE')
 ON CONFLICT ("code") DO UPDATE
 SET
   "name" = EXCLUDED."name",

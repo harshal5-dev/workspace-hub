@@ -45,8 +45,7 @@ CREATE TABLE "users" (
   "id" uuid PRIMARY KEY DEFAULT gen_random_uuid(),
   "first_name" varchar(150) NOT NULL,
   "last_name" varchar(150),
-  "user_name" varchar(500) UNIQUE NOT NULL,
-  "email_id" varchar(500) NOT NULL,
+  "email_id" varchar(500) UNIQUE NOT NULL,
   "hash_password" varchar(500) NOT NULL,
   "profile_picture_url" varchar(2000),
   "status" "user_status" NOT NULL DEFAULT ('INVITED'),
@@ -113,6 +112,8 @@ CREATE TABLE "sessions" (
   "created_at" timestamp NOT NULL DEFAULT (now()),
   "updated_at" timestamp NOT NULL DEFAULT (now())
 );
+
+CREATE INDEX ON "users" ("email_id");
 
 CREATE UNIQUE INDEX ON "tenant_users" ("user_id", "tenant_id");
 

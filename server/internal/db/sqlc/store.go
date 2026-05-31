@@ -2,12 +2,14 @@ package db
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/jackc/pgx/v5/pgxpool"
 )
 
 type Store interface {
 	Querier
+	RegisterUserTx(ctx context.Context, arg RegisterUserTxParams) (RegisterUserTxResult, error)
 }
 
 type SQLStore struct {
@@ -22,4 +24,20 @@ func NewStore(connPool *pgxpool.Pool) Store {
 	}
 }
 
-func (s *SQLStore) execTx(ctx context.Context)
+func (store *SQLStore) execTx(ctx context.Context, fn func(*Queries) error) error {
+	tx, err := store.connPool.Begin(ctx)
+	if err != nil {
+		return err
+	}
+
+	q := New(tx)
+
+	if err := fn(q); err != nil {
+		if rbErr := tx.Rollback(ctx); rbErr != nil {
+			return fmt.Errorf("tx err: %v, rollback err: %v", err, rbErr)
+		}
+		return err
+	}
+
+	return tx.Commit(ctx)
+}

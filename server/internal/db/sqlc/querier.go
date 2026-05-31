@@ -11,8 +11,11 @@ import (
 )
 
 type Querier interface {
+	CheckUserExistsByEmailId(ctx context.Context, emailID string) (bool, error)
 	CreateTenant(ctx context.Context, arg CreateTenantParams) (Tenant, error)
+	CreateTenantUser(ctx context.Context, arg CreateTenantUserParams) (TenantUser, error)
 	CreateUser(ctx context.Context, arg CreateUserParams) (User, error)
+	GetRoleByCode(ctx context.Context, code string) (Role, error)
 	GetTenant(ctx context.Context, id pgtype.UUID) (Tenant, error)
 }
 
