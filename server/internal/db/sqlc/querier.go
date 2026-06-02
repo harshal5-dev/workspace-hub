@@ -18,6 +18,7 @@ type Querier interface {
 	GetRoleByCode(ctx context.Context, code string) (Role, error)
 	GetTenant(ctx context.Context, id pgtype.UUID) (Tenant, error)
 	GetUserByEmailId(ctx context.Context, emailID string) (User, error)
+	GetUserById(ctx context.Context, id pgtype.UUID) (User, error)
 }
 
 var _ Querier = (*Queries)(nil)

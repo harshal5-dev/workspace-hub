@@ -41,7 +41,7 @@ type RegisterResponse struct {
 	TenantName string `json:"tenantName"`
 	FirstName  string `json:"firstName"`
 	LastName   string `json:"lastName"`
-	Email      string `json:"email"`
+	EmailId    string `json:"emailId"`
 	UserId     string `json:"userId"`
 }
 
@@ -58,5 +58,13 @@ func (request *LoginRequest) Normalize() {
 type LoginResponse struct {
 	FirstName string `json:"firstName"`
 	LastName  string `json:"lastName"`
-	Email     string `json:"email"`
+	Email     string `json:"emailId"`
+	Token     string `json:"-"`
+}
+
+type UserResponse struct {
+	FirstName string `json:"firstName"`
+	LastName  string `json:"lastName"`
+	EmailId   string `json:"emailId"`
+	Id        string `json:"id"`
 }

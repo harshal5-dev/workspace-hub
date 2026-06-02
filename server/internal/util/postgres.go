@@ -33,3 +33,14 @@ func PgTextToString(text pgtype.Text) string {
 
 	return text.String
 }
+func StringToPgUUID(id string) (pgtype.UUID, error) {
+	parsedUUID, err := uuid.Parse(id)
+	if err != nil {
+		return pgtype.UUID{Valid: false}, err
+	}
+
+	return pgtype.UUID{
+		Bytes: parsedUUID,
+		Valid: true,
+	}, nil
+}

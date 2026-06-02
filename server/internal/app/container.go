@@ -28,11 +28,11 @@ func NewContainer(config config.Config, store db.Store) *Container {
 	}
 
 	container.Services = Services{
-		Auth: auth.NewService(container.Store),
+		Auth: auth.NewService(container.Store, config),
 	}
 
 	container.Handlers = Handlers{
-		Auth: auth.NewHandler(container.Services.Auth),
+		Auth: auth.NewHandler(container.Services.Auth, config),
 	}
 
 	return container

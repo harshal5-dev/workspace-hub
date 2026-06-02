@@ -19,6 +19,7 @@ func (module *authModule) RegisterPublicRoutes(public *gin.RouterGroup) {
 	authGroup.POST("/login", module.handler.LoginUser)
 }
 
-func (module *authModule) RegisterProtectedRoutes(_ *gin.RouterGroup) {
-	// add protected auth routes here when needed
+func (module *authModule) RegisterProtectedRoutes(private *gin.RouterGroup) {
+	authGroup := private.Group("/auth")
+	authGroup.GET("/me", module.handler.GetCurrentUser)
 }

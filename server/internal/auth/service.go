@@ -9,17 +9,20 @@ import (
 	"github.com/jackc/pgx/v5"
 
 	"github.com/harshal5-dev/workspace-hub/server/internal/common"
+	"github.com/harshal5-dev/workspace-hub/server/internal/config"
 	db "github.com/harshal5-dev/workspace-hub/server/internal/db/sqlc"
 	"github.com/harshal5-dev/workspace-hub/server/internal/util"
 )
 
 type Service struct {
-	store db.Store
+	store  db.Store
+	config config.Config
 }
 
-func NewService(store db.Store) *Service {
+func NewService(store db.Store, cfg config.Config) *Service {
 	return &Service{
-		store: store,
+		store:  store,
+		config: cfg,
 	}
 }
 
@@ -57,7 +60,7 @@ func (service *Service) RegisterUser(ctx context.Context, payload RegisterReques
 		TenantName: result.Tenant.Name,
 		FirstName:  result.User.FirstName,
 		LastName:   util.PgTextToString(result.User.LastName),
-		Email:      result.User.EmailID,
+		EmailId:    result.User.EmailID,
 		UserId:     util.PgUUIDToString(result.User.ID),
 	}, nil
 }
@@ -72,16 +75,56 @@ func (service *Service) Login(ctx context.Context, payload LoginRequest) (LoginR
 		}
 
 		errMessage = "Unable to login. Please try again later."
-		return LoginResponse{}, common.NewAppError(errors.New(errMessage), http.StatusBadRequest)
+		return LoginResponse{}, common.NewAppError(errors.New(errMessage), http.StatusInternalServerError)
 	}
 
 	if err := util.CheckPassword(fetchUser.HashPassword, payload.Password); err != nil {
 		return LoginResponse{}, common.NewAppError(errors.New(errMessage), http.StatusBadRequest)
 	}
 
+	userDetails := util.UserDetails{
+		UserId: fetchUser.ID.String(),
+	}
+	jwtConfig := util.JwtConfig{
+		AccessTokenDuration: service.config.AccessTokenDuration,
+		Issuer:              service.config.Issuer,
+		JWTSecret:           service.config.JWTSecret,
+	}
+	token, err := util.GenerateToken(userDetails, jwtConfig)
+	if err != nil {
+		errMessage = "Unable to login. Please try again later."
+		return LoginResponse{}, common.NewAppError(errors.New(errMessage), http.StatusInternalServerError)
+	}
+
 	return LoginResponse{
 		FirstName: fetchUser.FirstName,
 		LastName:  fetchUser.LastName.String,
 		Email:     fetchUser.EmailID,
+		Token:     token,
+	}, nil
+}
+
+func (service *Service) GetCurrentUser(ctx context.Context, userId string) (UserResponse, *common.AppError) {
+	errMessage := "Unable to login. Please try again later."
+	userUUID, err := util.StringToPgUUID(userId)
+
+	if err != nil {
+		return UserResponse{}, common.NewAppError(errors.New(errMessage), http.StatusInternalServerError)
+	}
+
+	fetchUser, err := service.store.GetUserById(ctx, userUUID)
+
+	if err != nil {
+		if errors.Is(err, pgx.ErrNoRows) {
+			return UserResponse{}, common.NewAppError(errors.New(errMessage), http.StatusNotFound)
+		}
+		return UserResponse{}, common.NewAppError(errors.New(errMessage), http.StatusInternalServerError)
+	}
+
+	return UserResponse{
+		FirstName: fetchUser.FirstName,
+		LastName:  fetchUser.LastName.String,
+		EmailId:   fetchUser.EmailID,
+		Id:        fetchUser.ID.String(),
 	}, nil
 }
