@@ -14,6 +14,7 @@ type RegisterRequest struct {
 func (request *RegisterRequest) Normalize() {
 	request.FirstName = strings.TrimSpace(request.FirstName)
 	request.EmailId = strings.ToLower(strings.TrimSpace(request.EmailId))
+	request.Password = strings.TrimSpace(request.Password)
 
 	if request.LastName == nil {
 		return
@@ -28,6 +29,13 @@ func (request *RegisterRequest) Normalize() {
 	request.LastName = &trimmedLastName
 }
 
+func (request *RegisterRequest) GetLastName() string {
+	if request.LastName == nil {
+		return ""
+	}
+	return *request.LastName
+}
+
 type RegisterResponse struct {
 	TenantId   string `json:"tenantId"`
 	TenantName string `json:"tenantName"`
@@ -35,4 +43,20 @@ type RegisterResponse struct {
 	LastName   string `json:"lastName"`
 	Email      string `json:"email"`
 	UserId     string `json:"userId"`
+}
+
+type LoginRequest struct {
+	EmailId  string `json:"emailId" binding:"required,email,max=500"`
+	Password string `json:"password" binding:"required,min=8,max=72"`
+}
+
+func (request *LoginRequest) Normalize() {
+	request.EmailId = strings.ToLower(strings.TrimSpace(request.EmailId))
+	request.Password = strings.TrimSpace(request.Password)
+}
+
+type LoginResponse struct {
+	FirstName string `json:"firstName"`
+	LastName  string `json:"lastName"`
+	Email     string `json:"email"`
 }

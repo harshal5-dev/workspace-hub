@@ -1,7 +1,6 @@
 package auth
 
 import (
-	"errors"
 	"fmt"
 
 	"github.com/go-playground/validator/v10"
@@ -13,19 +12,8 @@ func validateRegisterRequest(request RegisterRequest) error {
 	return requestValidator.Struct(request)
 }
 
-func buildValidationErrorDetails(err error) map[string]string {
-	var validationErr validator.ValidationErrors
-	if !errors.As(err, &validationErr) {
-		return map[string]string{"body": err.Error()}
-	}
-
-	details := make(map[string]string, len(validationErr))
-	for _, fieldErr := range validationErr {
-		field := jsonFieldName(fieldErr.Field())
-		details[field] = validationMessage(fieldErr)
-	}
-
-	return details
+func validateLoginRequest(request LoginRequest) error {
+	return requestValidator.Struct(request)
 }
 
 func jsonFieldName(structField string) string {

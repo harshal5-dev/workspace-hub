@@ -7,3 +7,7 @@ SELECT EXISTS (
   FROM users
   WHERE email_id = $1
 );
+
+
+-- name: GetUserByEmailId :one
+SELECT * FROM users WHERE email_id = $1 LIMIT 1;

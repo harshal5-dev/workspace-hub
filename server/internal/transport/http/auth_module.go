@@ -16,6 +16,7 @@ func newAuthModule(handler *auth.Handler) RouteModule {
 func (module *authModule) RegisterPublicRoutes(public *gin.RouterGroup) {
 	authGroup := public.Group("/auth")
 	authGroup.POST("/register", module.handler.RegisterUser)
+	authGroup.POST("/login", module.handler.LoginUser)
 }
 
 func (module *authModule) RegisterProtectedRoutes(_ *gin.RouterGroup) {
