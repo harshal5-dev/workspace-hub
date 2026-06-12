@@ -1,4 +1,4 @@
-# Nex Flow Doc
+# Workspace Hub Doc
 
 ## 📌 1. Project Overview
 
