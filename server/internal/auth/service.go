@@ -55,15 +55,39 @@ func (service *Service) RegisterUser(ctx context.Context, payload RegisterReques
 		return RegisterResponse{}, common.NewAppError(errors.New(errMessage), http.StatusInternalServerError)
 	}
 
-	return RegisterResponse{
+	response := RegisterResponse{
 		TenantId:   util.PgUUIDToString(result.Tenant.ID),
 		TenantName: result.Tenant.Name,
 		FirstName:  result.User.FirstName,
 		LastName:   util.PgTextToString(result.User.LastName),
 		EmailId:    result.User.EmailID,
 		UserId:     util.PgUUIDToString(result.User.ID),
-	}, nil
+	}
+
+	// service.publishWelcomeEmail(ctx, response)
+
+	return response, nil
 }
+
+// func (service *Service) publishWelcomeEmail(ctx context.Context, user RegisterResponse) {
+// 	if service.mailPublisher == nil {
+// 		return
+// 	}
+
+// 	message := mail.Message{
+// 		To:      user.EmailId,
+// 		Subject: "Welcome to Workspace Hub",
+// 		Body: fmt.Sprintf(
+// 			"Hi %s,\n\nWelcome to Workspace Hub. Your workspace %q is ready.\n\nThanks,\nWorkspace Hub",
+// 			user.FirstName,
+// 			user.TenantName,
+// 		),
+// 	}
+
+// 	if err := service.mailPublisher.Publish(ctx, message); err != nil {
+// 		log.Printf("failed to publish welcome email job: %v", err)
+// 	}
+// }
 
 func (service *Service) Login(ctx context.Context, payload LoginRequest) (LoginResponse, *common.AppError) {
 	fetchUser, err := service.store.GetUserByEmailId(ctx, payload.EmailId)

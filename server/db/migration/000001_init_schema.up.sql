@@ -35,7 +35,6 @@ CREATE TABLE "tenants" (
   "id" uuid PRIMARY KEY DEFAULT gen_random_uuid(),
   "name" varchar(200) NOT NULL,
   "description" varchar(500),
-  "isActive" bool NOT NULL DEFAULT false,
   "created_at" timestamp NOT NULL DEFAULT (now()),
   "updated_at" timestamp NOT NULL DEFAULT (now()),
   "status" "tenant_status" NOT NULL DEFAULT ('ACTIVE')

@@ -1,6 +1,9 @@
 postgres:
 	docker run --name postgres18 -p 5432:5432 -e POSTGRES_USER=root -e POSTGRES_PASSWORD=12345 -d postgres:18-alpine
 
+rabbitmq:
+	docker run --name rabbitmq -p 5672:5672 -p 15672:15672 -d rabbitmq:4-management
+
 create-db:
 	docker exec -it postgres18 createdb --username=root --owner=root workspace_hub_db
 
@@ -12,7 +15,7 @@ migrate-create:
 	# make migrate-create name=init_schema
 
 migrate-up:
-	migrate -path db/migration -database "postgres://root:12345@localhost:5432/workspace_hub_db?sslmode=disable" -verbose up
+	migrate -path db/migration -database "postgresql://harshal-root:TscHldNRegWQL3BTft0r@167.233.74.73:5433/workspace_hub_db?sslmode=disable" -verbose up
 
 migrate-down:
 	migrate -path db/migration -database "postgres://root:12345@localhost:5432/workspace_hub_db?sslmode=disable" -verbose down
@@ -26,4 +29,4 @@ server-dev:
 server-prod:
 	APP_ENV=production go run ./cmd/server/main.go
 
-.PHONY: postgres create-db drop-db migrate-create migrate-up migrate-down sqlc server-dev server-prod
+.PHONY: postgres rabbitmq create-db drop-db migrate-create migrate-up migrate-down sqlc server-dev server-prod

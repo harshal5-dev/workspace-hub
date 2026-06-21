@@ -14,6 +14,16 @@ type Config struct {
 
 	DBSource string `mapstructure:"DATABASE_SOURCE"`
 
+	RabbitMQURL               string `mapstructure:"RABBITMQ_URL"`
+	RabbitMQMailQueue         string `mapstructure:"RABBITMQ_MAIL_QUEUE"`
+	RabbitMQMailWorkerEnabled bool   `mapstructure:"RABBITMQ_MAIL_WORKER_ENABLED"`
+
+	SMTPHost     string `mapstructure:"SMTP_HOST"`
+	SMTPPort     int    `mapstructure:"SMTP_PORT"`
+	SMTPUsername string `mapstructure:"SMTP_USERNAME"`
+	SMTPPassword string `mapstructure:"SMTP_PASSWORD"`
+	SMTPFrom     string `mapstructure:"SMTP_FROM"`
+
 	JWTSecret            string        `mapstructure:"JWT_SECRET"`
 	AccessTokenDuration  time.Duration `mapstructure:"ACCESS_TOKEN_DURATION"`
 	RefreshTokenDuration time.Duration `mapstructure:"REFRESH_TOKEN_DURATION"`
@@ -39,6 +49,9 @@ func LoafConfig(path, env string) (config Config, err error) {
 
 	viper.AutomaticEnv()
 	viper.SetEnvKeyReplacer(strings.NewReplacer(".", "_"))
+	viper.SetDefault("RABBITMQ_MAIL_QUEUE", "mail.jobs")
+	viper.SetDefault("RABBITMQ_MAIL_WORKER_ENABLED", false)
+	viper.SetDefault("SMTP_PORT", 587)
 
 	err = viper.ReadInConfig()
 	if err != nil {
