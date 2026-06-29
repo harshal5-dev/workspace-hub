@@ -144,9 +144,68 @@
   }
 }
 
+@keyframes fade-slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(1rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-slide-right {
+  from {
+    opacity: 0;
+    transform: translateX(-1rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes soft-float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-0.45rem);
+  }
+}
+
 @layer utilities {
   .animate-sidebar-menu-in {
     animation: sidebar-menu-in 360ms ease-out both;
     animation-delay: calc(var(--sidebar-menu-index) * 45ms);
+  }
+
+  .animate-fade-slide-up {
+    animation: fade-slide-up 560ms ease-out both;
+  }
+
+  .animate-fade-slide-right {
+    animation: fade-slide-right 560ms ease-out both;
+  }
+
+  .animate-soft-float {
+    animation: soft-float 5s ease-in-out infinite;
+  }
+
+  .animation-delay-100 {
+    animation-delay: 100ms;
+  }
+
+  .animation-delay-200 {
+    animation-delay: 200ms;
+  }
+
+  .animation-delay-300 {
+    animation-delay: 300ms;
+  }
+
+  .animation-delay-500 {
+    animation-delay: 500ms;
   }
 }

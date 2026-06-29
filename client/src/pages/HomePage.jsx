@@ -64,9 +64,6 @@ export default function HomePage() {
             <ThemeToggle />
             <Button variant="ghost" render={<Link to="/login" />}>
               Login
-            </Button>
-            <Button render={<Link to="/dashboard" />}>
-              View dashboard
               <IconArrowRight data-icon="inline-end" />
             </Button>
           </div>
@@ -74,28 +71,25 @@ export default function HomePage() {
 
         <div className="mx-auto grid max-w-7xl gap-12 px-6 py-16 lg:grid-cols-[1fr_0.85fr] lg:px-8 lg:py-24">
           <div className="flex flex-col justify-center">
-            <div className="mb-5 inline-flex w-fit items-center gap-2 rounded-full border bg-card/70 px-3 py-1 text-sm text-muted-foreground shadow-sm backdrop-blur">
+            <div className="animate-fade-slide-up mb-5 inline-flex w-fit items-center gap-2 rounded-full border bg-card/70 px-3 py-1 text-sm text-muted-foreground shadow-sm backdrop-blur">
               <span className="size-2 rounded-full bg-primary" />
               Multi-tenant task management portfolio project
             </div>
-            <h1 className="max-w-4xl font-heading text-5xl font-semibold tracking-tight sm:text-6xl lg:text-7xl">
+            <h1 className="animate-fade-slide-up animation-delay-100 max-w-4xl font-heading text-5xl font-semibold tracking-tight sm:text-6xl lg:text-7xl">
               Run projects, tasks, and teams across every client workspace.
             </h1>
-            <p className="mt-6 max-w-2xl text-lg leading-8 text-muted-foreground">
+            <p className="animate-fade-slide-up animation-delay-200 mt-6 max-w-2xl text-lg leading-8 text-muted-foreground">
               Workspace Hub is a modern SaaS-style task management product built
               to showcase frontend design, tenant-aware UX, and a
               production-ready Go API architecture.
             </p>
-            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              <Button size="lg" render={<Link to="/dashboard" />}>
-                Explore dashboard
+            <div className="animate-fade-slide-up animation-delay-300 mt-8 flex flex-col gap-3 sm:flex-row">
+              <Button size="lg" render={<Link to="/login" />}>
+                See login flow
                 <IconArrowRight data-icon="inline-end" />
               </Button>
-              <Button size="lg" variant="outline" render={<Link to="/login" />}>
-                See login flow
-              </Button>
             </div>
-            <div className="mt-10 flex flex-wrap gap-2" id="stack">
+            <div className="animate-fade-slide-up animation-delay-500 mt-10 flex flex-wrap gap-2" id="stack">
               {stack.map((item) => (
                 <span
                   key={item}
@@ -107,7 +101,7 @@ export default function HomePage() {
             </div>
           </div>
 
-          <Card className="relative overflow-hidden bg-card/80 shadow-2xl shadow-primary/10 backdrop-blur">
+          <Card className="animate-fade-slide-up animation-delay-200 relative overflow-hidden bg-card/80 shadow-2xl shadow-primary/10 backdrop-blur lg:animate-soft-float">
             <div className="absolute inset-x-0 top-0 h-1 bg-linear-to-r from-primary via-primary/50 to-transparent" />
             <CardHeader className="border-b">
               <div className="flex items-center justify-between">
@@ -181,7 +175,7 @@ export default function HomePage() {
         </div>
         <div className="grid gap-4 md:grid-cols-3">
           {features.map((feature) => (
-            <Card key={feature.title} className="bg-card/70">
+            <Card key={feature.title} className="animate-fade-slide-up bg-card/70">
               <CardHeader>
                 <span className="mb-3 flex size-11 items-center justify-center rounded-xl bg-primary/10 text-primary [&_svg]:size-5">
                   {feature.icon}
@@ -198,7 +192,7 @@ export default function HomePage() {
         id="architecture"
         className="mx-auto max-w-7xl px-6 pb-16 lg:px-8"
       >
-        <Card className="overflow-hidden">
+        <Card className="animate-fade-slide-up overflow-hidden">
           <div className="grid gap-0 lg:grid-cols-3">
             {[
               [
@@ -233,7 +227,7 @@ export default function HomePage() {
       </section>
 
       <footer className="border-t bg-muted/20">
-        <div className="mx-auto grid max-w-7xl gap-10 px-6 py-10 lg:grid-cols-[1.2fr_0.8fr_0.8fr] lg:px-8">
+        <div className="mx-auto grid max-w-7xl gap-12 px-6 py-10 lg:grid-cols-[1.2fr_0.8fr_0.8fr] lg:gap-16 lg:px-8">
           <div>
             <BrandLogo />
             <p className="mt-4 max-w-md text-sm leading-6 text-muted-foreground">
@@ -242,21 +236,7 @@ export default function HomePage() {
               backend-ready Gin, sqlc, and PostgreSQL architecture.
             </p>
           </div>
-          <div>
-            <h3 className="font-heading text-sm font-semibold">Product</h3>
-            <div className="mt-4 grid gap-2 text-sm text-muted-foreground">
-              <Link to="/dashboard" className="hover:text-foreground">
-                Dashboard
-              </Link>
-              <Link to="/login" className="hover:text-foreground">
-                Login flow
-              </Link>
-              <a href="#features" className="hover:text-foreground">
-                Tenant features
-              </a>
-            </div>
-          </div>
-          <div>
+          <div className="lg:pl-6">
             <h3 className="font-heading text-sm font-semibold">Tech Stack</h3>
             <div className="mt-4 flex flex-wrap gap-2">
               {stack.map((item) => (

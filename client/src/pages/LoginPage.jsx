@@ -1,17 +1,23 @@
-import { Link } from "react-router-dom"
-import { IconArrowRight, IconBrandGithub, IconLock, IconMail } from "@tabler/icons-react"
+import { Link } from "react-router-dom";
+import {
+  IconArrowRight,
+  IconBrandGithub,
+  IconHome,
+  IconLock,
+  IconMail,
+} from "@tabler/icons-react";
 
-import { BrandLogo } from "@/components/brand-logo"
-import { ThemeToggle } from "@/components/theme-toggle"
-import { Button } from "@/components/ui/button"
+import { BrandLogo } from "@/components/brand-logo";
+import { ThemeToggle } from "@/components/theme-toggle";
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
+} from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
 
 export default function LoginPage() {
   return (
@@ -24,7 +30,7 @@ export default function LoginPage() {
           </Link>
           <ThemeToggle />
         </div>
-        <div className="relative max-w-lg">
+        <div className="animate-fade-slide-right animation-delay-100 relative max-w-lg">
           <div className="mb-6 inline-flex rounded-full border bg-card/70 px-3 py-1 text-sm text-muted-foreground backdrop-blur">
             Secure tenant access
           </div>
@@ -36,7 +42,7 @@ export default function LoginPage() {
             platform backed by Gin, sqlc, and PostgreSQL.
           </p>
         </div>
-        <Card className="relative bg-card/70 backdrop-blur">
+        <Card className="animate-fade-slide-up animation-delay-300 relative bg-card/70 backdrop-blur">
           <CardContent className="grid grid-cols-3 gap-4 p-5">
             {[
               ["99.9%", "Tenant uptime"],
@@ -52,7 +58,13 @@ export default function LoginPage() {
         </Card>
       </section>
 
-      <section className="flex items-center justify-center px-6 py-10">
+      <section className="relative flex items-center justify-center px-6 py-10">
+        <div className="absolute top-8 right-8 hidden items-center gap-2 lg:flex">
+          <Button variant="ghost" render={<Link to="/" />}>
+            <IconHome />
+            Home
+          </Button>
+        </div>
         <div className="w-full max-w-md">
           <div className="mb-8 flex items-center justify-between lg:hidden">
             <Link to="/" aria-label="Workspace Hub home">
@@ -61,12 +73,14 @@ export default function LoginPage() {
             <div className="flex items-center gap-2">
               <ThemeToggle />
               <Button variant="ghost" render={<Link to="/" />}>
+                <IconHome />
                 Home
               </Button>
             </div>
           </div>
 
-          <Card className="shadow-xl shadow-primary/5">
+          <Card className="animate-fade-slide-up overflow-hidden shadow-xl shadow-primary/5">
+            <div className="h-1 bg-linear-to-r from-primary via-primary/60 to-transparent" />
             <CardHeader>
               <CardTitle className="text-2xl">Welcome back</CardTitle>
               <CardDescription>
@@ -75,18 +89,17 @@ export default function LoginPage() {
             </CardHeader>
             <CardContent className="space-y-5">
               <div className="grid gap-3">
-                <label className="text-sm font-medium" htmlFor="workspace">
-                  Workspace slug
-                </label>
-                <Input id="workspace" placeholder="acme" />
-              </div>
-              <div className="grid gap-3">
                 <label className="text-sm font-medium" htmlFor="email">
                   Email
                 </label>
                 <div className="relative">
-                  <IconMail className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
-                  <Input id="email" type="email" placeholder="you@company.com" className="pl-9" />
+                  <IconMail className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground" />
+                  <Input
+                    id="email"
+                    type="email"
+                    placeholder="you@company.com"
+                    className="pl-9"
+                  />
                 </div>
               </div>
               <div className="grid gap-3">
@@ -94,16 +107,28 @@ export default function LoginPage() {
                   <label className="text-sm font-medium" htmlFor="password">
                     Password
                   </label>
-                  <a href="#" className="text-sm text-primary hover:underline">
+                  <Link
+                    to="/forgot-password"
+                    className="text-sm text-primary hover:underline"
+                  >
                     Forgot password?
-                  </a>
+                  </Link>
                 </div>
                 <div className="relative">
-                  <IconLock className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
-                  <Input id="password" type="password" placeholder="Enter password" className="pl-9" />
+                  <IconLock className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground" />
+                  <Input
+                    id="password"
+                    type="password"
+                    placeholder="Enter password"
+                    className="pl-9"
+                  />
                 </div>
               </div>
-              <Button className="w-full" size="lg" render={<Link to="/dashboard" />}>
+              <Button
+                className="w-full"
+                size="lg"
+                render={<Link to="/dashboard" />}
+              >
                 Continue to dashboard
                 <IconArrowRight data-icon="inline-end" />
               </Button>
@@ -120,14 +145,18 @@ export default function LoginPage() {
                 Continue with GitHub
               </Button>
               <div className="rounded-xl border bg-muted/40 p-4 text-sm text-muted-foreground">
-                Demo tenant: <span className="font-medium text-foreground">acme</span> ·
-                Role: <span className="font-medium text-foreground">Owner</span> ·
-                Backend: <span className="font-medium text-foreground">Gin + PostgreSQL</span>
+                Demo tenant:{" "}
+                <span className="font-medium text-foreground">acme</span> ·
+                Role: <span className="font-medium text-foreground">Owner</span>{" "}
+                · Backend:{" "}
+                <span className="font-medium text-foreground">
+                  Gin + PostgreSQL
+                </span>
               </div>
             </CardContent>
           </Card>
         </div>
       </section>
     </main>
-  )
+  );
 }

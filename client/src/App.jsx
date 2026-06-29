@@ -1,9 +1,11 @@
-import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom"
+import { BrowserRouter, Route, Routes } from "react-router-dom"
 
 import DashboardLayout from "./layout/DashboardLayout"
 import DashboardPage from "./pages/DashboardPage"
+import ForgotPasswordPage from "./pages/ForgotPasswordPage"
 import HomePage from "./pages/HomePage"
 import LoginPage from "./pages/LoginPage"
+import NotFoundPage from "./pages/NotFoundPage"
 import ProjectsPage from "./pages/ProjectsPage"
 import SettingsPage from "./pages/SettingsPage"
 import TasksPage from "./pages/TasksPage"
@@ -16,6 +18,7 @@ export function App() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/forgot-password" element={<ForgotPasswordPage />} />
         <Route path="/dashboard" element={<DashboardLayout />}>
           <Route index element={<DashboardPage />} />
           <Route path="workspaces" element={<WorkspacesPage />} />
@@ -24,7 +27,7 @@ export function App() {
           <Route path="teams" element={<TeamsPage />} />
           <Route path="settings" element={<SettingsPage />} />
         </Route>
-        <Route path="*" element={<Navigate to="/" replace />} />
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </BrowserRouter>
   )
